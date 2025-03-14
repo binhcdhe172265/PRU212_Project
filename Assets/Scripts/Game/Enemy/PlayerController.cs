@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,9 +10,12 @@ public class PlayerController : MonoBehaviour
     private Transform _player; 
     private void Aware()
     {
-        // _player = FindObjectOfType<PlayerMovement>().transform;
+        _player = FindAnyObjectByType<PlayerMovement>().transform;
     }
-
+    void Start()
+    {
+        Aware();
+    }
     // Update is called once per frame
     void Update()
     {

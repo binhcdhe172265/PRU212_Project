@@ -1,45 +1,56 @@
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerShoot : MonoBehaviour
 {
-
-
-    // Update is called once per frame
-    public GameObject bullet;
+    public GameObject bulletPrefab;
     public Transform firePos;
     public float TimeBtwFire = 1f;
     public float bulletForce;
     private float timeBtwFire;
+    private BulletPool bulletPool;
 
     void Start()
     {
-       
+        bulletPool = FindObjectOfType<BulletPool>();
     }
+
     void Update()
     {
         timeBtwFire -= Time.deltaTime;
-        if (timeBtwFire < 0)
+        if (timeBtwFire <= 0)
         {
             FireBullet();
         }
     }
+
     void FireBullet()
     {
         timeBtwFire = TimeBtwFire;
-        GameObject bulletTmp = Instantiate(bullet, firePos.position, Quaternion.identity);
-        Rigidbody2D rb = bulletTmp.GetComponent<Rigidbody2D>();
-        rb.AddForce(transform.up * bulletForce, ForceMode2D.Impulse);
+
+        GameObject bullet = bulletPool.GetBullet();
+        bullet.transform.position = firePos.position;
+        bullet.transform.rotation = firePos.rotation;
+
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(firePos.right * bulletForce, ForceMode2D.Impulse);
+
+        StartCoroutine(CheckBulletOutOfScreen(bullet));
     }
 
+    IEnumerator CheckBulletOutOfScreen(GameObject bullet)
+    {
+        while (bullet != null && bullet.activeInHierarchy)
+        {
+            Vector3 screenPoint = Camera.main.WorldToViewportPoint(bullet.transform.position);
+            if (screenPoint.x < 0 || screenPoint.x > 1 || screenPoint.y < 0 || screenPoint.y > 1)
+            {
+                bulletPool.ReturnBullet(bullet);
+                yield break;
+            }
 
-    //void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Enemy"))
-    //    {
-    //        gameObject.SetActive(false);
-    //    }
-    //}
+            yield return null;
+        }
+    }
+
 }
-
-  
