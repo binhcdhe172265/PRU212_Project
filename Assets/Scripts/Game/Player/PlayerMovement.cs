@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private float _rotationSpeed;
 
     private Rigidbody2D _rigidbody;
-    private Vector2 _movementInput;
+    public Vector2 _movementInput;
     private Vector2 _smoothedMovementInput;
     private Vector2 _movementInputSmoothVelocity;
 

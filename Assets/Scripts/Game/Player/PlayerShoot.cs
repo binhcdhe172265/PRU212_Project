@@ -12,7 +12,7 @@ public class PlayerShoot : MonoBehaviour
 
     void Start()
     {
-        bulletPool = FindObjectOfType<BulletPool>();
+        bulletPool = FindAnyObjectByType<BulletPool>();
     }
 
     void Update()
