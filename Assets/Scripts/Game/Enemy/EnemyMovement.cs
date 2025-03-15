@@ -8,13 +8,13 @@ public class EnemyMovement : MonoBehaviour
     private float _rotationSpeed;
 
     private Rigidbody2D _rigidbody;
-    private PlayerController _playerAwarenessController;
+    private EnemyController _playerAwarenessController;
     private Vector2 _targetDirection;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _playerAwarenessController = GetComponent<PlayerController>();
+        _playerAwarenessController = GetComponent<EnemyController>();
     }
 
     // Update is called once per frame
