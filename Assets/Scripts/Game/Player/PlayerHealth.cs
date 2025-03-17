@@ -6,12 +6,14 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealth = 100f;
     private float currentHealth;
     public Slider healthSlider;
+    private Animator animator;
 
     void Start()
     {
         currentHealth = maxHealth;
         healthSlider.maxValue = maxHealth;
         healthSlider.value = currentHealth;
+        animator = GetComponent<Animator>();
     }
 
     public void TakeDamage(float damage)
@@ -23,9 +25,10 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth == 0)
         {
-            PauseGame();
+            Die();
         }
     }
+
 
     public void Heal(float healAmount)
     {
@@ -35,9 +38,17 @@ public class PlayerHealth : MonoBehaviour
         healthSlider.value = currentHealth;
     }
 
+    private void Die()
+    {
+        animator.SetBool("IsDead", true);
+        animator.SetBool("IsMoving", false);
+        Invoke("PauseGame", 2);
+    }
+
     private void PauseGame()
     {
         Time.timeScale = 0;
         Debug.Log("Game Over - Paused!");
     }
+
 }

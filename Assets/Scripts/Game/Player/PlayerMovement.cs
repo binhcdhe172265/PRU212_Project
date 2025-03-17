@@ -13,10 +13,12 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 _movementInput;
     private Vector2 _smoothedMovementInput;
     private Vector2 _movementInputSmoothVelocity;
+    private Animator _animator;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -24,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
        
         SetPlayerPosition();
         RotateInDirectionOfInput();
+        setupAnimation();
     }
 
     private void SetPlayerPosition()
@@ -49,6 +52,12 @@ public class PlayerMovement : MonoBehaviour
                 _rotationSpeed * Time.deltaTime);  
             _rigidbody.MoveRotation(angle);
         }
+    }
+
+    private void setupAnimation()
+    {
+        bool isMoving = _movementInput != Vector2.zero;
+        _animator.SetBool("IsMoving", isMoving);
     }
 
     private void OnMove(InputValue inputValue)
