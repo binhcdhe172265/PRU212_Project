@@ -3,23 +3,24 @@ using UnityEngine;
 
 public class EnemyPool : MonoBehaviour
 {
-    public GameObject enemyPrefab;
+    public GameObject[] enemyPrefabs;  // Mảng các Prefab Enemy
     public int poolSize = 10;
     private Queue<GameObject> enemyPool;
 
     void Awake() // Ensure enemyPool is initialized before anything else
     {
-        if (enemyPrefab == null)
+        if (enemyPrefabs.Length == 0)
         {
-            Debug.LogError("EnemyPrefab is not assigned in EnemyPool!");
+            Debug.LogError("No enemy prefabs assigned in EnemyPool!");
             return;
         }
 
         enemyPool = new Queue<GameObject>();
 
+        // Instantiate enemies for each prefab type in the pool
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject enemy = Instantiate(enemyPrefab);
+            GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)]);  // Chọn ngẫu nhiên Prefab
             enemy.SetActive(false);
             enemyPool.Enqueue(enemy);
         }
@@ -41,13 +42,14 @@ public class EnemyPool : MonoBehaviour
         }
         else
         {
-            if (enemyPrefab == null)
+            if (enemyPrefabs.Length == 0)
             {
-                Debug.LogError("EnemyPrefab is null when trying to instantiate a new enemy!");
+                Debug.LogError("No enemy prefabs available when trying to instantiate a new enemy!");
                 return null;
             }
 
-            GameObject enemy = Instantiate(enemyPrefab);
+            // Nếu không còn enemy nào trong pool, tạo mới từ một Prefab ngẫu nhiên
+            GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)]);
             return enemy;
         }
     }

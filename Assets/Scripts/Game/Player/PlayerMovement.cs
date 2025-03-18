@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
@@ -23,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-       
         SetPlayerPosition();
         RotateInDirectionOfInput();
         setupAnimation();
@@ -31,13 +30,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void SetPlayerPosition()
     {
+        // Smooth input
         _smoothedMovementInput = Vector2.SmoothDamp(
             _smoothedMovementInput,
             _movementInput,
             ref _movementInputSmoothVelocity,
-            0.1f);  
+            0.1f);
 
+        // Tính vị trí đích của player
         Vector2 targetPosition = _rigidbody.position + _smoothedMovementInput * _speed * Time.fixedDeltaTime;
+
+        // Giới hạn vị trí Y trong phạm vi từ -10 đến 10
+        targetPosition.y = Mathf.Clamp(targetPosition.y, -10f, 10f);
+
+        // Di chuyển player đến vị trí mới
         _rigidbody.MovePosition(targetPosition);
     }
 
@@ -49,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
             float angle = Mathf.MoveTowardsAngle(
                 _rigidbody.rotation,
                 targetAngle,
-                _rotationSpeed * Time.deltaTime);  
+                _rotationSpeed * Time.deltaTime);
             _rigidbody.MoveRotation(angle);
         }
     }

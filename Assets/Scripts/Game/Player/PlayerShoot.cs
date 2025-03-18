@@ -24,6 +24,13 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    public void IncreaseShootingSpeed(float amount)
+    {
+        TimeBtwFire -= amount;
+        // Ensure TimeBtwFire does not go below a minimum value if needed
+        TimeBtwFire = Mathf.Clamp(TimeBtwFire, 0.1f, 10f);  // Example clamping
+    }
+
     void FireBullet()
     {
         timeBtwFire = TimeBtwFire;
@@ -52,5 +59,4 @@ public class PlayerShoot : MonoBehaviour
             yield return null;
         }
     }
-
 }
