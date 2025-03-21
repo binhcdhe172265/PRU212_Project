@@ -9,16 +9,50 @@ public class PlayerHealth : MonoBehaviour
     public Slider healthSlider;         // Thanh máu UI
     private bool isInvulnerable = false; // Cờ kiểm tra xem người chơi có miễn nhiễm sát thương không
 
+    private SafeZone currentSafeZone;
+
+    void Awake()
+    {
+        maxHealth = 100f;  // Cài đặt máu tối đa
+        currentHealth = maxHealth;
+       
+    }
     void Start()
     {
-        currentHealth = maxHealth;     // Khởi tạo máu hiện tại bằng máu tối đa
-        healthSlider.maxValue = maxHealth;
-        healthSlider.value = currentHealth;
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
+    }
+
+    // Kiểm tra xem player có đang trong vùng an toàn không
+    private bool IsPlayerInSafeZone()
+    {
+        if (currentSafeZone != null)
+        {
+            float distance = Vector3.Distance(currentSafeZone.transform.position, transform.position);
+            return distance <= currentSafeZone.transform.localScale.x;
+        }
+        return false;
     }
 
     // Hàm khi nhận sát thương
     public void TakeDamage(float damage)
     {
+        if (damage <= 0f)
+        {
+            Debug.Log("Damage is 0 or less. Ignoring damage.");
+            return;
+        }
+
+        Debug.Log("TakeDamage called! Damage: " + damage + " Current Health: " + currentHealth);
+
+        if (currentSafeZone != null && IsPlayerInSafeZone())  // Nếu player đang ở trong vùng an toàn
+        {
+            return;  // Không nhận sát thương
+        }
+
         if (isInvulnerable)  // Nếu người chơi đang miễn nhiễm sát thương
         {
             Debug.Log("Player is invulnerable, no damage taken.");

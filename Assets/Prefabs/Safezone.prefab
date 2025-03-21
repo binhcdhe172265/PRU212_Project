@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4065516142896864188}
   - component: {fileID: 1308787321823093980}
+  - component: {fileID: 4436199735098995560}
   m_Layer: 0
   m_Name: Safezone
   m_TagString: Untagged
@@ -87,3 +88,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4436199735098995560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4201765383613760782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1e9200cff55a234f9232f6564e18b50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 10
+  safeZoneColor: {r: 0, g: 0, b: 1, a: 0.2}
